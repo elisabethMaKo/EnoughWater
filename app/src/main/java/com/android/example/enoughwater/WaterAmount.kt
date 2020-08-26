@@ -41,6 +41,7 @@ class WaterAmount : AppWidgetProvider() {
                 context)
 
             )
+
             Log.i("Widget", "PendingIntent was called")
 
             views.setTextViewText(R.id.appwidget_text, widgetText)
