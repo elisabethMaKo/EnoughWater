@@ -42,8 +42,8 @@ class WaterAmount : AppWidgetProvider() {
         private fun getPendingIntent(context: Context, value: Int):
                 PendingIntent {
             val intent = Intent(context, MainActivity::class.java)
-            intent.action = Constants.ADD_CUP
-            intent.putExtra(Constants.ONE_CUP, value)
+            intent.action = ADD_CUP
+            intent.putExtra(ONE_CUP, value)
             return PendingIntent.getActivity(context, value, intent, 0)
         }
 
