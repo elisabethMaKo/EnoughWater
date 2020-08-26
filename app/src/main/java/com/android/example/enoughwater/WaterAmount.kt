@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.RemoteViews
 
 /**
@@ -13,40 +14,51 @@ import android.widget.RemoteViews
 
 class WaterAmount : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        // There may be multiple widgets active, so update all of them
+        // IDs: There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
+            Log.i("Widget", "OnUpdate called")
         }
+
     }
 
     // COMPANION OBJECTS:
-    // If you need a function or a property to be tied to a class rather than to instances of it
-    // you can declare it inside a companion object. You can call method with className.method
-    // - here not though?
+    // we want some implementation to be a class but still want to expose some behavior as static.
+
+    // “companion object” is an extension of the concept of “object”: an object that is a companion
+    // to a particular class, and thus has !! access to it’s private level methods and properties. !!
 
     companion object {
-        internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+        // deleted "internal" before fun - still works
+        fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
             val widgetText = context.getString(R.string.amount)
 
+            // remoteViews = responsible for displaying layout in another process --> this widget
             val views = RemoteViews(context.packageName, R.layout.water_amount)
+
+            // onClickListener = Button
             views.setOnClickPendingIntent(R.id.widget_button, getPendingIntent(
-                context, 1)
+                context)
+
             )
+            Log.i("Widget", "PendingIntent was called")
 
             views.setTextViewText(R.id.appwidget_text, widgetText)
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views)
+            Log.i("Widget", "WidgetButton was clicked")
         }
 
-        private fun getPendingIntent(context: Context, value: Int):
+        private fun getPendingIntent(context: Context):
                 PendingIntent {
             val intent = Intent(context, MainActivity::class.java)
             intent.action = ADD_CUP
-            intent.putExtra(ONE_CUP, value)
-            return PendingIntent.getActivity(context, value, intent, 0)
+            intent.putExtra(ONE_CUP, 1)
+            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
     }
 }
+
 
