@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Enough Water</string>
+    <string name="cup_water"> So far, you drank\nthis many <b>cups of water</b> today: </string>
+    <string name="addingButton">ADD A CUP</string>
+    <string name="cups_so_far" />
+    <string name="reset_button">RESET</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="amount">Be healthy, \ndrink another cup!</string>
+</resources>
