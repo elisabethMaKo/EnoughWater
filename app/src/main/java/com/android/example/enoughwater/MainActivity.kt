@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     /* FUNCTIONS FOR INCREASE & RESET */
-
     fun increaseAmount () {
         Log.i("Widget", "Button in App was clicked")
         value += 1
