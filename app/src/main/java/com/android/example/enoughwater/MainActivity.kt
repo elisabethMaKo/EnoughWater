@@ -1,6 +1,8 @@
 package com.android.example.enoughwater
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.android.example.enoughwater.databinding.ActivityMainBinding
@@ -37,10 +39,26 @@ class MainActivity : AppCompatActivity() {
         if(savedInstanceState != null) {
             value = savedInstanceState.getInt("amount", 0)
         }
+
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i("Widget", "onStart started, value = $value")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("Widget", "onResume started")
+    }
+
+    /* FUNCTIONS FOR INCREASE & RESET */
+
     fun increaseAmount () {
+        Log.i("Widget", "Button in App was clicked")
         value += 1
         binding.cupsAmount.text = value.toString()
+        Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show()
     }
 
     fun reset () {
