@@ -58,17 +58,22 @@ class MainActivity : AppCompatActivity() {
         Log.i("Widget", "onResume called")
     }
 
+    override fun onStop() {
+        super.onStop()
+    }
+
     /* FUNCTIONS FOR INCREASE & RESET */
-    fun increaseAmount() {
+    private fun increaseAmount() {
         value += 1
         binding.cupsAmount.text = value.toString()
         Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show()
-        intent.action = null // BIG FIX --> removes the intent which is summoning the activity.
+        intent.action = null // BIG FIX --> removes the intent which is summoning the activity - works only when newly installed
     }
 
-    fun reset() {
+    private fun reset() {
         value = 0
         binding.cupsAmount.text = value.toString()
     }
+
 }
 
