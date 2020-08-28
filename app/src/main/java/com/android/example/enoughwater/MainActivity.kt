@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         /* storing values in bundle - key is always a String*/
         savedInstanceState?.putInt("amount", value)
+
         /* check if app is reloaded or started for the first time */
         if (savedInstanceState != null) {
             value = savedInstanceState.getInt("amount", 0)
@@ -38,14 +39,6 @@ class MainActivity : AppCompatActivity() {
         binding.resetButton.setOnClickListener {
             reset()
         }
-
-        if (intent != null && intent.action == ADD_CUP) {
-            increaseAmount()
-            Log.i("Widget", "intent != 0")
-            //val cupAmount = intent.getIntExtra(ONE_CUP, 0)
-            //val sum = value + cupAmount
-            //binding.cupsAmount.text = sum.toString()
-        }
     }
 
     override fun onStart() {
@@ -56,10 +49,15 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.i("Widget", "onResume called")
-    }
 
-    override fun onStop() {
-        super.onStop()
+        if (intent != null && intent.action == ADD_CUP) {
+            increaseAmount()
+            Log.i("Widget", "intent != 0")
+            //val cupAmount = intent.getIntExtra(ONE_CUP, 0)
+            //val sum = value + cupAmount
+            //binding.cupsAmount.text = sum.toString()
+        }
+
     }
 
     /* FUNCTIONS FOR INCREASE & RESET */
