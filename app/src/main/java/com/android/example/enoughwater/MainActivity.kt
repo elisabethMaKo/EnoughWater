@@ -16,54 +16,59 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        /* storing values in bundle - key is always a String*/
-        savedInstanceState?.putInt("amount", value)
+        Log.i("Widget", "onCreate called")
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        binding.adddingButton.setOnClickListener {
-            increaseAmount()
+        /* storing values in bundle - key is always a String*/
+        savedInstanceState?.putInt("amount", value)
+        /* check if app is reloaded or started for the first time */
+        if (savedInstanceState != null) {
+            value = savedInstanceState.getInt("amount", 0)
+            binding.cupsAmount.text = value.toString()
+            Log.i("Widget", "value from savedInstanceState = $value")
         }
 
-        binding.resetButton.setOnClickListener{
+        binding.adddingButton.setOnClickListener {
+            increaseAmount()
+            Log.i("Widget", "Button in App was clicked")
+            Log.i("Widget", "increase() called, value = $value")
+        }
+
+        binding.resetButton.setOnClickListener {
             reset()
         }
 
         if (intent != null && intent.action == ADD_CUP) {
-            val cupAmount = intent.getIntExtra(ONE_CUP, 0)
-            val sum = value + cupAmount
-            binding.cupsAmount.text = sum.toString()
+            increaseAmount()
+            Log.i("Widget", "intent != 0")
+            //val cupAmount = intent.getIntExtra(ONE_CUP, 0)
+            //val sum = value + cupAmount
+            //binding.cupsAmount.text = sum.toString()
         }
-
-        if(savedInstanceState != null) {
-            value = savedInstanceState.getInt("amount", 0)
-        }
-
     }
 
     override fun onStart() {
         super.onStart()
-        Log.i("Widget", "onStart started, value = $value")
+        Log.i("Widget", "onStart called")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.i("Widget", "onResume started")
+        Log.i("Widget", "onResume called")
     }
 
     /* FUNCTIONS FOR INCREASE & RESET */
-    fun increaseAmount () {
-        Log.i("Widget", "Button in App was clicked")
+    fun increaseAmount() {
         value += 1
         binding.cupsAmount.text = value.toString()
         Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show()
+        intent.action = null // BIG FIX --> removes the intent which is summoning the activity.
     }
 
-    fun reset () {
+    fun reset() {
         value = 0
         binding.cupsAmount.text = value.toString()
     }
-
 }
 
