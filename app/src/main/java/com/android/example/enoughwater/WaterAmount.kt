@@ -5,8 +5,8 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.RemoteViews
+import java.util.*
 
 /**
  * Implementation of App Widget functionality.
@@ -43,14 +43,16 @@ class WaterAmount : AppWidgetProvider() {
         }
 
         /* https://stackoverflow.com/questions/4102627/android-when-launch-the-same-activity-from-widget-with-different-extras-how-t
-        *  https://stackoverflow.com/questions/25172450/passing-data-with-a-pendingintent */
+        *  https://stackoverflow.com/questions/25172450/passing-data-with-a-pendingintent
+        *  https://stackoverflow.com/questions/3168484/pendingintent-works-correctly-for-the-first-notification-but-incorrectly-for-the
+        *  https://stackoverflow.com/questions/13742124/android-intent-flag-activity-no-history-not-working --> SOLUTION */
         private fun getPendingIntent(context: Context):
                 PendingIntent {
             val intent = Intent(context, MainActivity::class.java)
             intent.action = System.currentTimeMillis().toString() // used to make each intent unique --> no pending intents equal
             intent.addCategory(ADD_CUP) // needed for comparing intent in Main
             //intent.putExtra(ONE_CUP, 1) // always increased by one, done by increase()
-            intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY // SINGLE_TOP does not work with home button
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP // FINAL SOLUTION = CLEAR_TOP
             return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
     }
