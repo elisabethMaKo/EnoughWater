@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.adddingButton.setOnClickListener {
             increaseAmount()
+            Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show()
             Log.i("Widget", "Button in App was clicked")
             Log.i("Widget", "increase() called, value = $value")
         }
@@ -50,22 +51,36 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         Log.i("Widget", "onResume called")
 
-        if (intent != null && intent.action == ADD_CUP) {
+        if (intent != null && intent.hasCategory(ADD_CUP)) {
             increaseAmount()
             Log.i("Widget", "intent != 0")
             //val cupAmount = intent.getIntExtra(ONE_CUP, 0)
             //val sum = value + cupAmount
             //binding.cupsAmount.text = sum.toString()
         }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        Log.i("Widget", "onPause called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("Widget", "onStop called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("Widget", "onDestroy called")
     }
 
     /* FUNCTIONS FOR INCREASE & RESET */
     private fun increaseAmount() {
         value += 1
         binding.cupsAmount.text = value.toString()
-        Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show()
-        intent.action = null // BIG FIX --> removes the intent which is summoning the activity - works only when newly installed
+        intent.action = null // BIG FIX --> removes the intent which is summoning the activity.
+        intent.removeCategory(ADD_CUP) // BIG FIX --> removes the intent which is summoning the activity.
     }
 
     private fun reset() {

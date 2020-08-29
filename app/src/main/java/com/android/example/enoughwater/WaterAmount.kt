@@ -42,12 +42,15 @@ class WaterAmount : AppWidgetProvider() {
             appWidgetManager.updateAppWidget(appWidgetId, views) // Instruct the widget manager to update the widget
         }
 
-        // getActivity versus getBroadcast
+        /* https://stackoverflow.com/questions/4102627/android-when-launch-the-same-activity-from-widget-with-different-extras-how-t
+        *  https://stackoverflow.com/questions/25172450/passing-data-with-a-pendingintent */
         private fun getPendingIntent(context: Context):
                 PendingIntent {
             val intent = Intent(context, MainActivity::class.java)
-            intent.action = ADD_CUP
-            //intent.putExtra(ONE_CUP, 1) // always increased by one
+            intent.action = System.currentTimeMillis().toString() // used to make each intent unique --> no pending intents equal
+            intent.addCategory(ADD_CUP) // needed for comparing intent in Main
+            //intent.putExtra(ONE_CUP, 1) // always increased by one, done by increase()
+            intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY // SINGLE_TOP does not work with home button
             return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
     }
