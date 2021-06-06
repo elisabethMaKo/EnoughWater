@@ -88,5 +88,11 @@ class MainActivity : AppCompatActivity() {
         binding.cupsAmount.text = value.toString()
     }
 
+    /* DECREASE COUNTER METHOD */
+    fun decreaseCounter(inputValue: Int): Int {
+        value = inputValue -1
+        return value
+    }
+
 }
 
