@@ -33,10 +33,14 @@ android {
 
     dataBinding {
         enabled = true
-}
+    }
 
 
 }
+
+
+
+
 
 //jacoco {
 //    toolVersion "0.8.0"
@@ -94,6 +98,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.1'
+
 }
 
 
