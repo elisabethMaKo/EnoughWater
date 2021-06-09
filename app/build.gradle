@@ -1,7 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'jacoco'
+//apply plugin: 'jacoco'
+//apply plugin: 'info.solidsoft.pitest'
+apply plugin: 'pl.droidsonroids.pitest'
 
 android {
     compileSdkVersion 29
@@ -31,29 +33,44 @@ android {
     dataBinding {
         enabled = true
     }
-
 }
 
-jacoco {
-    toolVersion "0.8.0"
-}
+//jacoco {
+//    toolVersion "0.8.0"
+//}
 
-task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+//task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+//
+//        reports {
+//            xml.enabled = true
+//            html.enabled = true
+//            html.destination file("${buildDir}/reports/coverage")
+//        }
+//
+//        def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+//        def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+//        def mainSrc = "${project.projectDir}/src/main/java"
+//
+//        sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs
+//        additionalSourceDirs.from = subprojects.sourceSets.main.allSource.srcDirs
+//        classDirectories.from = subprojects.sourceSets.main.output
+//        executionData.from = subprojects.jacocoTestReport.executionData
+//}
 
-    reports {
-        xml.enabled = true
-        html.enabled = true
-        html.destination file("${buildDir}/reports/coverage")
-    }
+//pitest {
+//    targetClasses = ['com.android.example.enoughwater.*']  //by default "${project.group}.*"
+//    threads = 4
+//    outputFormats = ['XML', 'HTML']
+//    timestampedReports = false
+//}
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
-    def mainSrc = "${project.projectDir}/src/main/java"
-
-    sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs
-    additionalSourceDirs.from = subprojects.sourceSets.main.allSource.srcDirs
-    classDirectories.from = subprojects.sourceSets.main.output
-    executionData.from = subprojects.jacocoTestReport.executionData
+pitest {
+    reportDir = 'build/pitest/reports'
+    targetClasses = ['com.android.example.enoughwater.*']
+    threads = 6
+    outputFormats = ['HTML']
+    timeoutConstInMillis = 20000
+    verbose = true
 }
 
 dependencies {
@@ -66,3 +83,4 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
