@@ -79,6 +79,7 @@ sonarqube {
         property "sonar.projectKey", "elisabethMaKo_EnoughWater"
         property "sonar.organization", "elisabethmako"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.language", "kotlin"
     }
 }
 
