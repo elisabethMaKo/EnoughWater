@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 //apply plugin: 'jacoco'
 //apply plugin: 'info.solidsoft.pitest'
 apply plugin: 'pl.droidsonroids.pitest'
+apply plugin: 'org.sonarqube'
 
 android {
     compileSdkVersion 29
@@ -71,6 +72,14 @@ pitest {
     outputFormats = ['HTML']
     timeoutConstInMillis = 20000
     verbose = true
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "elisabethMaKo_EnoughWater"
+        property "sonar.organization", "elisabethmako"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 dependencies {
