@@ -99,7 +99,7 @@ pitest {
     reportDir = 'build/pitest/reports'
     targetClasses = ['com.android.example.enoughwater.*']
     threads = 6
-    outputFormats = ['HTML']
+    outputFormats = ['HTML', 'XML']
     timeoutConstInMillis = 20000
     verbose = true
 }
