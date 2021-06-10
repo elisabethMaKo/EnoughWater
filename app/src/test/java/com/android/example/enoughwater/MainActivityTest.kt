@@ -1,6 +1,6 @@
 package com.android.example.enoughwater
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MainActivityTest {
@@ -13,10 +13,9 @@ class MainActivityTest {
 
         // ACT
         val mainActivity = MainActivity()
-        var result = mainActivity.decreaseCounter(counter)
+        val result = mainActivity.decreaseCounter(counter)
 
         // ASSERT
         assertEquals(expectedResult, result)
     }
-
 }
