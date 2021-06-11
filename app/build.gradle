@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'jacoco'
+apply plugin: 'jacoco'
 //apply plugin: 'info.solidsoft.pitest'
 apply plugin: 'pl.droidsonroids.pitest'
 apply plugin: 'org.sonarqube'
@@ -66,34 +66,31 @@ android {
 
 }
 
-//jacoco {
-//    toolVersion "0.8.0"
-//}
+jacoco {
+    toolVersion "0.8.6"
+}
 
-//task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
-//
-//        reports {
-//            xml.enabled = true
-//            html.enabled = true
-//            html.destination file("${buildDir}/reports/coverage")
-//        }
-//
-//        def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-//        def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
-//        def mainSrc = "${project.projectDir}/src/main/java"
-//
-//        sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs
-//        additionalSourceDirs.from = subprojects.sourceSets.main.allSource.srcDirs
-//        classDirectories.from = subprojects.sourceSets.main.output
-//        executionData.from = subprojects.jacocoTestReport.executionData
-//}
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        html.destination file("${buildDir}/reports/jacoco/html")
+    }
 
-//pitest {
-//    targetClasses = ['com.android.example.enoughwater.*']  //by default "${project.group}.*"
-//    threads = 4
-//    outputFormats = ['XML', 'HTML']
-//    timestampedReports = false
-//}
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def mainSrc = "${project.projectDir}/src/main/java"
+    //java compiled classes
+    def javaTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug/classes", excludes: fileFilter)
+    //kotlin compiled classes
+    def kotlinTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
+
+    classDirectories.from = files([javaTree, kotlinTree])
+    sourceDirectories.from files([mainSrc])
+    executionData.from fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec', 'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'
+    ])
+}
+
 
 pitest {
     reportDir = 'build/pitest/reports'
